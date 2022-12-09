@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Calculator</title>
+	<link rel="stylesheet" href="Calculator.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="Calculator.js"></script>
+</head>
+
+<body>
+
+
+	<div class="calculator">
+		<div id="display">
+			<form name="form1" method="POST" id="calcForm">
+				<input type="text" name="Qn" id="Qn" readonly>
+				<input type="text" name="answer" id="ans" readonly>
+		</div>
+
+		<div class="buttons">
+			<input type="button" value="(" onclick="check('(')">
+			<input type="button" value=")" onclick="check(')')">
+			<input type="button" value="√" onclick="form.Qn.value +='Math.sqrt('">
+			<input type="button" value="DEL"
+				onclick="form.Qn.value =form.Qn.value.substr(0,form.Qn.value.length-1),form.answer.value=''"
+				style="background-color:#d940ff">
+			<input type="button" value="AC" onclick="form.Qn.value='',form.answer.value=''"
+				style="background-color:#d940ff">
+		</div>
+
+		<div class="buttons">
+			<input type="button" value="7" onclick="form.Qn.value +='7'">
+			<input type="button" value="8" onclick="form.Qn.value +='8'">
+			<input type="button" value="9" onclick="form.Qn.value +='9'">
+			<input type="button" value="π" onclick="form.Qn.value +='3.14'">
+			<input type="button" value="^" onclick="form.Qn.value+='**'">
+		</div>
+
+		<div class="buttons">
+			<input type="button" value="4" onclick="form.Qn.value +='4'">
+			<input type="button" value="5" onclick="form.Qn.value +='5'">
+			<input type="button" value="6" onclick="form.Qn.value +='6'">
+			<input type="button" value="x" onclick="check('*')">
+			<input type="button" value="÷" onclick="check('/')">
+		</div>
+
+		<div class="buttons">
+			<input type="button" value="1" onclick="form.Qn.value +='1'">
+			<input type="button" value="2" onclick="form.Qn.value +='2'">
+			<input type="button" value="3" onclick="form.Qn.value +='3'">
+			<input type="button" value="+" onclick="check('+')">
+			<input type="button" value="-" onclick="check('-')">
+		</div>
+
+		<div class="buttons">
+			<input type="button" value="0" onclick="form.Qn.value +='0'">
+			<input type="button" value="." onclick="check('.')">
+			<input type="button" value="*10^x" onclick="form.Qn.value +='*10**'">
+
+			<input type="submit" id="ret" name="retrieve" value="Ans">
+
+			<input type="submit" value="=" id="sub" name="store" onclick="calcu()">
+		</div>
+	</div>
+
+	</form>
+
+	<script>
+		let form = document.querySelector("#calcForm");
+		form.addEventListener("submit", (e) => {
+
+			let xhr = new XMLHttpRequest();
+			xhr.open("POST", "./updateData.php", true);
+			xhr.onload = () => {
+				if (xhr.responseText.slice(-2) !== "OK") {
+					console.log("Error");
+				} else {
+					console.log("Updated Successfully");
+				}
+			};
+
+			let formData = new FormData(form);
+			formData.append('retrieve', true);
+			formData.append('store', true);
+			xhr.send(formData);
+
+			e.preventDefault();
+		})
+	</script>
+
+</body>
+
+</html>
